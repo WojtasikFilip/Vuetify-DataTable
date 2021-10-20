@@ -1,10 +1,13 @@
 <template>
   <div class="ml-15 mr-15">
     <v-alert color="blue-grey" dark class="ma-10">
-      Rent selected movies: {{ selectedMovie.toString() }}
+      Rent selected movies: {{ selectedItem.map((el) => el.title).join(', ') }}
     </v-alert>
+    <v-text-field v-model="search" label="Search"></v-text-field>
+
     <v-data-table
       v-model="selectedItem"
+      :search="search"
       :headers="headers"
       :items="movies"
       :items-per-page="6"
@@ -24,6 +27,7 @@ export default {
     return {
       movies: [],
       selectedItem: [],
+      search: '',
       headers: [
         { text: 'Title', align: 'start', value: 'title', class: 'blue-grey lighten-5' },
         { text: 'Director', value: 'director', class: 'blue-grey lighten-5' },
@@ -42,12 +46,6 @@ export default {
         method: 'GET',
       });
       this.movies = data;
-    },
-  },
-
-  computed: {
-    selectedMovie() {
-      return this.selectedItem.map((el) => el.title);
     },
   },
 
